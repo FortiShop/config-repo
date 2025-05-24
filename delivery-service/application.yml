@@ -61,3 +61,8 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.apache.kafka.clients.consumer: WARN
     org.springframework.kafka.listener: WARN
+
+management:
+  metrics:
+    enable:
+      all: true

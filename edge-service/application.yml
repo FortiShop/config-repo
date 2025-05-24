@@ -98,3 +98,8 @@ logging:
           http11: info
       hibernate:
         SQL: debug
+
+management:
+  metrics:
+    enable:
+      all: true
