@@ -1,0 +1,100 @@
+server:
+  port: 9001
+  netty:
+    connection-timeout: 2s
+    idle-timeout: 15s
+  shutdown: graceful
+
+spring:
+  application:
+    name: edge-service
+
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+
+  rabbitmq:
+    host: ${vault.rabbitmq.host}
+    port: ${vault.rabbitmq.port}
+    username: ${vault.rabbitmq.username}
+    password: ${vault.rabbitmq.password}
+
+  cloud:
+    stream:
+      defaultBinder: rabbit
+    bus:
+      enabled: true
+      destination: springCloudBus
+    gateway:
+      mvc:
+        routes:
+          - id: product-inventory-service
+            uri: ${vault.productInventoryServiceUrl}
+            predicates:
+              - Path=/api/products/**, /api/inventory/**
+
+          - id: order-payment-service
+            uri: ${vault.orderPaymentServiceUrl}
+            predicates:
+              - Path=/api/orders/**, /api/payments/**
+
+          - id: delivery-service
+            uri: ${vault.deliveryServiceUrl}
+            predicates:
+              - Path=/api/delivery/**
+
+          - id: notification-service
+            uri: ${vault.notificationServiceUrl}
+            predicates:
+              - Path=/api/notifications/**
+
+  datasource:
+    url: ${vault.mysql.url}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${vault.mysql.username}
+    password: ${vault.mysql.password}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  data:
+    redis:
+      connect-timeout: 2s
+      host: ${vault.redis.host}
+      port: ${vault.redis.port}
+      timeout: 1s
+
+  kafka:
+    bootstrap-servers: ${vault.kafka.servers}
+    consumer:
+      group-id: point-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+jwt:
+  secret: ${vault.jwt.secret}
+  accessTokenValidity: 3600000 # 1 hour
+  refreshTokenValidity: 604800000 # 7 days
+
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web:
+            FilterChainProxy: debug
+      apache:
+        coyote:
+          http11: info
+      hibernate:
+        SQL: debug

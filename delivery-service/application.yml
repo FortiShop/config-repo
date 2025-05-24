@@ -1,0 +1,63 @@
+server:
+  port: 9004
+  netty:
+    connection-timeout: 2s
+    idle-timeout: 15s
+  shutdown: graceful
+
+spring:
+  application:
+    name: delivery-service
+
+  lifecycle:
+    timeout-per-shutdown-phase: 15s
+
+  datasource:
+    url: ${vault.mysql.url}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${vault.mysql.username}
+    password: ${vault.mysql.password}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  kafka:
+    bootstrap-servers: ${vault.kafka.servers}
+    consumer:
+      group-id: delivery-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  rabbitmq:
+    host: ${vault.rabbitmq.host}
+    port: ${vault.rabbitmq.port}
+    username: ${vault.rabbitmq.username}
+    password: ${vault.rabbitmq.password}
+
+  cloud:
+    stream:
+      defaultBinder: rabbit
+    bus:
+      enabled: true
+      destination: springCloudBus
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.apache.kafka.clients.consumer: WARN
+    org.springframework.kafka.listener: WARN
