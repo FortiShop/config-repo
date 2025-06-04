@@ -52,7 +52,7 @@ spring:
         acks: all
         retries: 3
     listener:
-      ack-mode:manual
+      ack-mode: manual
 
   rabbitmq:
     host: ${vault.rabbitmq.host}
