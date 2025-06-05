@@ -34,12 +34,6 @@ spring:
       connect-timeout: 2s
       timeout: 1s
 
-    elasticsearch:
-      host: ${vault.elasticsearch.host}
-      port: ${vault.elasticsearch.port]
-      socket-timeout: 5s
-      connection-timeout: 2s
-
   kafka:
     bootstrap-servers: ${vault.kafka.servers}
     consumer:
@@ -65,6 +59,11 @@ spring:
     port: ${vault.rabbitmq.port}
     username: ${vault.rabbitmq.username}
     password: ${vault.rabbitmq.password}
+
+  elasticsearch:
+    uris: ${vault.elasticsearch.uri}
+    connection-timeout: 3s
+    socket-timeout: 5s
 
   cloud:
     stream:
