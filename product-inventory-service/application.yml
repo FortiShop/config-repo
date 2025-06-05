@@ -60,6 +60,12 @@ spring:
     username: ${vault.rabbitmq.username}
     password: ${vault.rabbitmq.password}
 
+  elasticsearch:
+    host: ${vault.elasticsearch.host}
+    port: ${vault.elasticsearch.port}
+    socket-timeout: 5s
+    connection-timeout: 2s
+
   cloud:
     stream:
       defaultBinder: rabbit
