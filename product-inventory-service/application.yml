@@ -65,6 +65,13 @@ spring:
     connection-timeout: 3s
     socket-timeout: 5s
 
+  zipkin:
+    base-url: ${vault.zipkin.url}
+    enabled: true
+    sleuth:
+      sampler:
+        probability: 1.0
+
   cloud:
     stream:
       defaultBinder: rabbit
@@ -79,6 +86,8 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.apache.kafka.clients.consumer: WARN
     org.springframework.kafka.listener: WARN
+  pattern:
+    console: '{"timestamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}","level":"%p","traceId":"%X{traceId}","spanId":"%X{spanId}","thread":"%t","logger":"%c","message":"%m"}%n'
 
 management:
   metrics:
