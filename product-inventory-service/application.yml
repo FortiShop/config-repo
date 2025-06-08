@@ -87,7 +87,15 @@ logging:
     org.apache.kafka.clients.consumer: WARN
     org.springframework.kafka.listener: WARN
   pattern:
-    console: '{"timestamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}","level":"%p","traceId":"%X{traceId}","spanId":"%X{spanId}","thread":"%t","logger":"%c","message":"%m"}%n'
+    console: >
+      {"@timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}",
+       "log.level":"%p",
+       "message":"%m",
+       "service.name":"${spring.application.name}",
+       "trace.id":"%X{traceId}",
+       "span.id":"%X{spanId}",
+       "thread.name":"%t",
+       "logger.name":"%c"}
 
 management:
   metrics:
