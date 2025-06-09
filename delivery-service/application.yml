@@ -53,13 +53,6 @@ spring:
     username: ${vault.rabbitmq.username}
     password: ${vault.rabbitmq.password}
 
-  zipkin:
-    base-url: ${vault.zipkin.url}
-    enabled: true
-    sleuth:
-      sampler:
-        probability: 1.0
-
   cloud:
     stream:
       defaultBinder: rabbit
@@ -89,3 +82,10 @@ management:
   metrics:
     enable:
       all: true
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${vault.zipkin.endpoint}

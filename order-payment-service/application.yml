@@ -60,13 +60,6 @@ spring:
       enabled: true
       destination: springCloudBus
 
-  zipkin:
-    base-url: ${vault.zipkin.url}
-    enabled: true
-    sleuth:
-      sampler:
-        probability: 1.0
-
 logging:
   level:
     root: INFO
@@ -89,3 +82,10 @@ management:
   metrics:
     enable:
       all: true
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${vault.zipkin.endpoint}

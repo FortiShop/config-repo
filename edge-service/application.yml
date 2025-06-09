@@ -81,13 +81,6 @@ spring:
     listener:
       ack-mode: manual
 
-  zipkin:
-    base-url: ${vault.zipkin.url}
-    enabled: true
-    sleuth:
-      sampler:
-        probability: 1.0
-
 jwt:
   secret: ${vault.jwt.secret}
   accessTokenValidity: 3600000 # 1 hour
@@ -120,3 +113,10 @@ management:
   metrics:
     enable:
       all: true
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${vault.zipkin.endpoint}
